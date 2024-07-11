@@ -1,12 +1,18 @@
 from tabulate import tabulate
 
+class Jeton:
+    def __init__(self) -> None:
+        self.set = {'X', 'O'}
+        self.list = list(self.set)
+
 class Board:
     def __init__(self, rows=6, cols=7) -> None:
+        # définition du jeu de jetons
+        self.jetons = Jeton()
+
         # personnalisation taille du board
         self.rows = rows
         self.cols = cols
-        self.JETONS = {'X', 'O'}
-        
         # on crée une ligne vide modèle
         # pas self car on veut pas l'utiliser nulle part ailleurs
         empty_row = ['']*self.cols

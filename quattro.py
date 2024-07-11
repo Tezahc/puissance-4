@@ -1,21 +1,32 @@
 from bread import Board
+from joueur import Player
 
-class Player:
-    def __init__(self, id, jeton=None) -> None:
-        self.name = f"Joueur {id}"
-        if jeton not in JETONS:
-            jeton = JETONS.pop()
-        self.jeton = jeton
+# class Player(Wilkinson):
+    
+#     # def __init__(self, id, jeton_input=None) -> None:
+#         self.name = f"Joueur {id}"
+#         self.jeton = None
+#         # self.assign_jeton(jeton_input)
+
+#     def assign_jeton(self, input):
+#         if input not in self.jeton_list
+#             input = self.)
+#         self.jeton = input
 
 class Wilkinson:
     def __init__(self) -> None:
         self.board = Board()
-        self.JETONS = {'X', 'O'}
-        self.joueur1 = Player(1)
-        print("joueur 1 est : ", self.joueur1.name, self.joueur1.jeton)
-        self.joueur2 = Player(2)
-        self.active_player = None
         self.game_over = False
+        
+        # accessible dans self.board.jetons.list/set
+        # self.jetons_set={'X', 'O'}
+        # self.jetons_list=list(self.jetons_set)
+
+        # définition des joueurs
+        self.joueur1 = Player(1, self.board.jetons)
+        self.joueur2 = Player(2, self.board.jetons)
+        self.active_player = None
+
         print(self.board)
         self.prompt()
 
@@ -33,7 +44,7 @@ class Wilkinson:
     def next_player(self):
         if self.active_player == self.joueur1:
             self.active_player = self.joueur2
-        else: 
+        else: # l'autre OU not defined trop smartass
             self.active_player = self.joueur1
     
     def is_int(self, input):
@@ -47,12 +58,12 @@ class Wilkinson:
 
         if not self.is_int(réponse):
             raise ValueError("Ce n'est pas un nombre entier !")
-#TODO : reproposer un prompt
+    #TODO : reproposer un prompt
             print("Ce n'est pas un nombre entier !")
             self.prompt()
         elif not (0 < int(réponse) < 8):
             raise ValueError(f"Ce n'est pas le numéro d'une colonne ! Veuillez entrer un nombre entre 1 et {self.board.cols}")
-#TODO : reproposer un prompt
+    #TODO : reproposer un prompt
             print(f"Ce n'est pas le numéro d'une colonne ! Veuillez entrer un nombre entre 1 et {self.board.cols}")
             self.prompt()
         else:
@@ -62,7 +73,7 @@ class Wilkinson:
     def read_input(self, réponse):
         pass
 
-    def drop_jeton(self, joueur :Player):
+    def drop_jeton(self, joueur):
         self.column_id = self.colonne_input - 1
         self.coin_type = joueur.jeton
         column_data = self.board.get_column(self.column_id)
@@ -102,10 +113,10 @@ class Wilkinson:
                     return True
 
     def check_direction(self, row, col, vecteur):
-        JETONS = {'X', 'O'}
+        # JETONS = {'X', 'O'}
         # jeton = self.board.data[self.__i][self.__j]
         jeton = self.active_player.jeton
-        if not jeton in JETONS:
+        if not jeton in self.board.jetons.set:
             return False, []
 
         coins = [ 
