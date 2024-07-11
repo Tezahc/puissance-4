@@ -1,33 +1,4 @@
-from tabulate import tabulate
-
-JETONS = {'X', 'O'}
-
-class Board:
-    def __init__(self, rows=6, cols=7) -> None:
-        # personnalisation taille du board
-        self.rows = rows
-        self.cols = cols
-        
-        # on crée une ligne vide modèle
-        # pas self car on veut pas l'utiliser nulle part ailleurs
-        empty_row = ['']*self.cols
-        
-        # on crée un tableau vide à partir de la ligne modèle
-        self.data = [empty_row.copy() for _ in range(self.rows)]
-
-    def __str__(self) -> str:
-        # rappel : doit retourner un str
-        t = tabulate(
-            self.data, 
-            headers=range(1, self.cols+1), 
-            tablefmt='simple_grid', 
-            colalign=(['center']*self.cols)
-        )
-        return t
-    
-    def get_column(self, col_id):
-        self.__col_id = col_id
-        return [ row[self.__col_id] for row in self.data ]
+from bread import Board
 
 class Player:
     def __init__(self, id, jeton=None) -> None:
@@ -39,6 +10,7 @@ class Player:
 class Wilkinson:
     def __init__(self) -> None:
         self.board = Board()
+        self.JETONS = {'X', 'O'}
         self.joueur1 = Player(1)
         print("joueur 1 est : ", self.joueur1.name, self.joueur1.jeton)
         self.joueur2 = Player(2)
@@ -130,8 +102,9 @@ class Wilkinson:
                     return True
 
     def check_direction(self, row, col, vecteur):
-        # JETONS = {'X', 'O'}
-        jeton = self.board.data[self.__i][self.__j]
+        JETONS = {'X', 'O'}
+        # jeton = self.board.data[self.__i][self.__j]
+        jeton = self.active_player.jeton
         if not jeton in JETONS:
             return False, []
 
@@ -151,20 +124,5 @@ class Wilkinson:
             return True
         else: return False
 
-
-
-class Lci(Wilkinson):
-    def __init__(self) -> None:
-        super().__init__()
-        print(self.board)
-
-t = Wilkinson()
-
-"""
-t.game.drop_jeton(2, 'X')
-t.game.drop_jeton(2, 'O')
-t.game.drop_jeton(3, 'X')
-t.game.drop_jeton(4, 'X')
-t.game.drop_jeton(5, 'X')
-t.game.is_game_over()
-"""
+if __name__ == "__main__":
+    t = Wilkinson()
