@@ -29,18 +29,41 @@ class Board:
         self.__col_id = col_id
         return [ row[self.__col_id] for row in self.data ]
 
+class Player:
+    def __init__(self, id, jeton=None) -> None:
+        self.name = f"Joueur {id}"
+        if jeton not in JETONS:
+            jeton = JETONS.pop()
+        self.jeton = jeton
+
 class Wilkinson:
     def __init__(self) -> None:
         self.board = Board()
         self.joueur1 = Player(1)
+        print("joueur 1 est : ", self.joueur1.name, self.joueur1.jeton)
         self.joueur2 = Player(2)
-        
+        self.active_player = None
+        self.game_over = False
         print(self.board)
+        self.prompt()
 
     def prompt(self):
-        
-        pass
-
+        while not self.game_over:
+            self.next_player()
+            print("joueur actif : ", self.active_player.name, self.active_player.jeton)
+            rep = input(f"{self.active_player.name}, veuillez entrer un numéro de colonne : ")
+            self.read_intput(rep)
+            self.drop_jeton(self.active_player)
+            
+            self.is_game_over()
+        print(f"Habemous winner ! Bravo à {self.active_player.name}")
+    
+    def next_player(self):
+        if self.active_player == self.joueur1:
+            self.active_player = self.joueur2
+        else: 
+            self.active_player = self.joueur1
+    
     def is_int(self, input):
         try:
             int(input)
@@ -49,21 +72,27 @@ class Wilkinson:
             return False
     
     def read_intput(self, réponse):
-        if not self.is_int(self, réponse):
+
+        if not self.is_int(réponse):
+            raise ValueError("Ce n'est pas un nombre entier !")
+#TODO : reproposer un prompt
             print("Ce n'est pas un nombre entier !")
-            self.prompt() #re demander l'input
+            self.prompt()
         elif not (0 < int(réponse) < 8):
+            raise ValueError(f"Ce n'est pas le numéro d'une colonne ! Veuillez entrer un nombre entre 1 et {self.board.cols}")
+#TODO : reproposer un prompt
             print(f"Ce n'est pas le numéro d'une colonne ! Veuillez entrer un nombre entre 1 et {self.board.cols}")
             self.prompt()
         else:
             self.colonne_input = int(réponse)
+            return int(réponse)
     
     def read_input(self, réponse):
         pass
 
-    def drop_jeton(self, colonne_input :int, joueur :str):
-        self.column_id = colonne_input - 1
-        self.coin_type = joueur
+    def drop_jeton(self, joueur :Player):
+        self.column_id = self.colonne_input - 1
+        self.coin_type = joueur.jeton
         column_data = self.board.get_column(self.column_id)
         
         for row_id, cell in enumerate(column_data):
@@ -97,7 +126,7 @@ class Wilkinson:
                     self.check_direction(self.__i, self.__j, VECTEUR_C) or
                     self.check_direction(self.__i, self.__j, VECTEUR_D)
                 ):
-                    print("Habemous winner !")
+                    self.game_over = True
                     return True
 
     def check_direction(self, row, col, vecteur):
@@ -122,12 +151,7 @@ class Wilkinson:
             return True
         else: return False
 
-class Player:
-    def __init__(self, id, jeton=None) -> None:
-        self.name = f"Joueur {id}"
-        if jeton not in JETONS:
-            jeton = JETONS.pop()
-        self.jeton = jeton
+
 
 class Lci(Wilkinson):
     def __init__(self) -> None:
