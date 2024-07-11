@@ -1,18 +1,6 @@
 from bread import Board
 from joueur import Player
 
-# class Player(Wilkinson):
-    
-#     # def __init__(self, id, jeton_input=None) -> None:
-#         self.name = f"Joueur {id}"
-#         self.jeton = None
-#         # self.assign_jeton(jeton_input)
-
-#     def assign_jeton(self, input):
-#         if input not in self.jeton_list
-#             input = self.)
-#         self.jeton = input
-
 class Wilkinson:
     def __init__(self) -> None:
         self.board = Board()
